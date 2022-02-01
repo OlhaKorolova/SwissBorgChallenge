@@ -9,7 +9,7 @@ import pages.CalculatorPage;
 public class CalculatorTests extends BaseTest {
 	//The following constants are used to modify the range and step of the testing data (to control runtime).
 	private final int MIN = 10;
-	private final int MAX = 15;
+	private final int MAX = 100;
 	private final int STEP = 1;
 
 
