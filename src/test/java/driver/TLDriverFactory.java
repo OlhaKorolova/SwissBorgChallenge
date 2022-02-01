@@ -30,11 +30,10 @@ public class TLDriverFactory {
       tlDriver.set(driver);
 
     } else if (browser.equals("safari")) {
-      driver = new SafariDriver();
+      driver = new SafariDriver();//Safari browser does not support basic authentication, tests would fail on login.
       driver.manage().window().setSize(dimension);
       tlDriver.set(driver);
     }
-
   }
 
   public static synchronized WebDriver getDriver() {

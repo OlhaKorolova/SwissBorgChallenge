@@ -4,10 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
-
 import java.math.BigInteger;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 import static org.testng.Reporter.log;
 import static utils.SiteUrls.PRIVACY;
 import static utils.SiteUrls.TERMS;
@@ -35,6 +32,7 @@ public class CalculatorPage extends BasePage {
 		writeText(enterIntegerField, input);
 	}
 
+	//Methods to get calculate factorial online
 	public void getFactorial(String input) {
 		enterValue(input);
 		clickElement(calculateButton);
@@ -46,15 +44,17 @@ public class CalculatorPage extends BasePage {
 		waitTextVisibility(result, input.toString());
 	}
 
+	//Method to extract factorial part from response String and convert it to Double
 	public Double extractFactorialFromResponse() {
 		String[] cutString = getText(result).split("\\:");
 		String receivedFact = cutString[1].trim();
 		return 	Double.parseDouble(receivedFact);
 	}
 
+	//Method to compare received factorial with calculated
 	public void verifyResult(int min, int max, int step) throws Exception {
 		if (min < 10 || max > 100) {
-			log("Please enter a value in the range from 10 to 100");
+			log("Please enter a value in the range from 10 to 100", true);
 			throw new Exception("Invalid testing range.");
 		}
 
@@ -62,15 +62,16 @@ public class CalculatorPage extends BasePage {
 			getFactorial(i);
 
 			Double actualResult = extractFactorialFromResponse();
-			log("Actual result is: "+actualResult);
+			log("Actual result is: "+actualResult, true);
 
 			Double expectedResult = calculateFactorial(i);
-			log("Expected result : "+expectedResult);
+			log("Expected result : "+expectedResult, true);
 
 			Assert.assertEquals(actualResult, expectedResult);
 		}
 	}
 
+	//Method for calculating expected result of Factorial
 	public Double calculateFactorial(Integer inputNumber) {
 		BigInteger fact = BigInteger.ONE;
 
@@ -80,6 +81,7 @@ public class CalculatorPage extends BasePage {
 		return fact.doubleValue();
 	}
 
+	//Verification of Terms of Service link and page
 	public void verifyTermsAnDConditionsPage() {
 		clickElement(termsAndConditionsLink);
 		SoftAssert soft = new SoftAssert();
@@ -88,6 +90,7 @@ public class CalculatorPage extends BasePage {
 		soft.assertAll();
 	}
 
+	//Verification fo Privacy link and page
 	public void verifyPrivacyPage() {
 		clickElement(privacyLink);
 		SoftAssert soft = new SoftAssert();
@@ -96,6 +99,7 @@ public class CalculatorPage extends BasePage {
 		soft.assertAll();
 	}
 
+	//Verification of error message to be displayed
 	public void verifyErrorMessage(String invalidInput) {
 		getFactorial(invalidInput);
 		Assert.assertEquals(getText(result), "Please enter an integer");

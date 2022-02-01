@@ -1,28 +1,21 @@
 package base;
 
-import com.relevantcodes.extentreports.ExtentReports;
 import driver.TLDriverFactory;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import reports.ExtentManager;
 import utils.PropReader;
 
-
 public abstract class BaseTest {
-
   public static String USERNAME;
   public static String PASSWORD;
   public static String BROWSER_PARAM;
   public static String HEIGHT_PARAM;
   public static String WIDTH_PARAM;
-  protected static ExtentReports extentReports;
-  protected WebDriver driver;
 
   public BaseTest() {
   }
@@ -47,22 +40,15 @@ public abstract class BaseTest {
     return new Dimension(Integer.parseInt(WIDTH_PARAM), Integer.parseInt(HEIGHT_PARAM));
   }
 
-    @AfterSuite
-    public static void AfterSuite() {
-        extentReports.flush();
-    }
-
   @BeforeSuite(alwaysRun = true)
   public void BeforeSuite(ITestContext ctx) {
     setDefaultValueToCommandLineParams();
-    extentReports = ExtentManager.getReporter();
     setTestData();
   }
 
   private void setTestData() {
     USERNAME = PropReader.read("test.username");
     PASSWORD = PropReader.read("test.password");
-
   }
 
   @BeforeMethod(alwaysRun = true)

@@ -12,21 +12,37 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.13.2'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.1.1'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '4.1.1'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.1.1'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-safari-driver', version: '4.1.1'
-    compile group: 'commons-configuration', name: 'commons-configuration', version: '1.10'
-    compile group: 'org.testng', name: 'testng', version: '7.5'
-    compile group: 'log4j', name: 'log4j', version: '1.2.17'
-    testCompile('io.github.bonigarcia:webdrivermanager:5.0.2')
-    compile group: 'com.relevantcodes', name: 'extentreports', version: '2.41.2'
-    compile group: 'io.codearte.jfairy', name: 'jfairy', version: '0.5.9'
+    implementation group: 'junit', name: 'junit', version: '4.13.2'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.1.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '4.1.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.1.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-safari-driver', version: '4.1.1'
+    implementation group: 'commons-configuration', name: 'commons-configuration', version: '1.10'
+    implementation group: 'org.testng', name: 'testng', version: '7.5'
+    testImplementation('io.github.bonigarcia:webdrivermanager:5.0.2')
+    implementation "org.slf4j:slf4j-simple:1.7.9"
+}
+
+if (hasProperty('buildScan')) {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
 }
 
 test {
     useTestNG()
 }
 
-
+task regression(type: Test) {
+    systemProperties(System.getProperties())
+    useTestNG() {
+        includeGroups "regression" // We define the group name by using ‘includeGroups’ parameter.
+        systemProperty "browser", System.getProperty("browser")
+        systemProperty "max", System.getProperty("MAX")
+        suites 'src/test/resources/suite.xml'
+        outputDirectory = file("$project.buildDir//testngOutput")
+        useDefaultListeners = true
+        testLogging.showStandardStreams = true
+    }
+}

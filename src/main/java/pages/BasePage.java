@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.PropReader;
 
+import java.time.Duration;
+
 import static org.testng.Reporter.log;
 
 public abstract class BasePage  {
@@ -20,7 +22,7 @@ public abstract class BasePage  {
 
 	public BasePage(WebDriver driver) {
 		this.driver = driver;
-		wait = new WebDriverWait(driver, 30);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		readProperties();
 	}
 
@@ -34,28 +36,29 @@ public abstract class BasePage  {
 		PASSWORD = PropReader.read("test.password");
 	}
 
+	//Navigation to main page with login:pass
 	public void navigate() {
-		log("Navigating to " + BASE_URL);
+		log("Navigating to " + BASE_URL, true);
 		driver.get("https://"+USERNAME+":"+PASSWORD+"@"+BASE_URL);
 	}
 
 	protected void writeText(By by, String text) {
 		findElement(by).sendKeys(text);
-		log("Text entered " + text + " into " + by.toString() + "\n");
+		log("Text entered " + text + " into " + by.toString() + "\n", true);
 	}
 
 	public void clear(By by) {
 		findElement(by).clear();
-		log("Text found in " + by.toString() + " is cleared\n");
+		log("Text found in " + by.toString() + " is cleared\n", true);
 	}
 
 	protected WebElement findElement(By by) {
 		WebElement el;
 		try {
 			el = waitVisibility(by);
-			log("Element with selector " + by.toString() + " is found\n");
+			log("Element with selector " + by.toString() + " is found\n", true);
 		} catch (TimeoutException t) {
-			log("Element with selector " + by.toString() + " is found\n");
+			log("Element with selector " + by.toString() + " is found\n", true);
 			el = null;
 		}
 		return el;
@@ -64,18 +67,20 @@ public abstract class BasePage  {
 	protected void clickElement(By by) {
 		WebElement el = findElement(by);
 		el.click();
-		log("Element " + by.toString() + " is clicked\n");
+		log("Element " + by.toString() + " is clicked\n", true);
 	}
 
+	//Waiter for specific text to be visible
 	public void waitTextVisibility(By by, String text) throws TimeoutException {
 		try {
 			wait = new WebDriverWait(driver, 20);
 			wait.until(ExpectedConditions.textToBePresentInElementLocated(by, text));
 		} catch (Exception e) {
-			log("Timeout while searching for " + by.toString());
+			log("Timeout while searching for " + by.toString(), true);
 		}
 	}
 
+	//Waiter for specific element to be visible
 	public WebElement waitVisibility(By by) throws TimeoutException {
 		WebElement el = null;
 		try {
@@ -83,7 +88,7 @@ public abstract class BasePage  {
 			el = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 		} catch (Exception e) {
 			el = null;
-			log("Timeout while searching for " + by.toString());
+			log("Timeout while searching for " + by.toString(), true);
 		}
 		return el;
 	}
@@ -93,7 +98,7 @@ public abstract class BasePage  {
 		WebElement el = findElement(by);
 		if (el == null) result = "";
 		else result = el.getText();
-		log("Displayed Text = " + result + "\n");
+		log("Displayed Text = " + result + "\n", true);
 		return result;
 	}
 }

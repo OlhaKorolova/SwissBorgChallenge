@@ -2,6 +2,9 @@ package utils;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import static org.testng.Reporter.log;
+
+//Class is used for reading properties of the project
 public class PropReader {
 
   private static final String path =
@@ -17,7 +20,7 @@ public class PropReader {
     } catch (org.apache.commons.configuration.ConfigurationException e) {
       e.printStackTrace();
     }
-    System.out.println("Key " + key + " value " + value);
+    log("Key " + key + " value " + value, true);
     return value;
   }
 
