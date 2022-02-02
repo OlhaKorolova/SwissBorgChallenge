@@ -16,3 +16,7 @@ Alternatively navigate to test/java/cases/CalculatorTests and run each test indi
 
 ## View test report
 Tests execution report could be found at "$project.buildDir//testngOutput/index.html". Open the file in browser to see the detailed report.
+
+## Range for verifyCalculatorTest
+The current range is set to run each integer from 10 to 100 to verify every scenario. 
+In order to reduce runtime of the test the range could be changed by modifying **MAX, MIN, STEP** constants in **CalculatorTests** class.
