@@ -42,4 +42,11 @@ public class CalculatorTests extends BaseTest {
 		CalculatorPage calculator = new CalculatorPage(driver);
 		calculator.verifyErrorMessage("string");
 	}
+
+	@Test(groups = "regression")
+	public void verifyFactorialForNegativeInteger() {
+		WebDriver driver = TLDriverFactory.getDriver();
+		CalculatorPage calculator = new CalculatorPage(driver);
+		calculator.verifyErrorMessage("-5");
+	}
 }
